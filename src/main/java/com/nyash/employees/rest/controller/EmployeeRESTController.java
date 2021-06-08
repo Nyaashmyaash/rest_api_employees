@@ -29,13 +29,35 @@ public class EmployeeRESTController {
     }
 
     @GetMapping("/employees/{id}")
-    public Employee getEmployee(@PathVariable("id") int id){
+    public Employee getEmployee(@PathVariable("id") int id) {
         Employee employee = employeeService.getEmployee(id);
 
-        if (employee == null){
+        if (employee == null) {
             throw new NoSuchEmployeeException("There is no employee with ID = " +
-                     id + " in Database");
+                    id + " in Database");
         }
         return employee;
+    }
+
+    @PostMapping("/employees")
+    public Employee addNewEmployee(@RequestBody Employee employee) {
+        employeeService.saveEmployee(employee);
+        return employee;
+    }
+
+    @PutMapping("/employees")
+    public Employee updateEmployee(@RequestBody Employee employee) {
+        employeeService.saveEmployee(employee);
+        return employee;
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public String deleteEmployee(@PathVariable("id") int id) {
+        Employee employee = employeeService.getEmployee(id);
+        if (employee == null) {
+            throw new NoSuchEmployeeException("There is no employee with ID = " + id + " in DB");
+        }
+        employeeService.deleteEmployee(id);
+        return "Employee with ID = " + id + " was deleted!";
     }
 }
